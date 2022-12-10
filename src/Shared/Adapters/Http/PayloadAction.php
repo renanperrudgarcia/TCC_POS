@@ -12,6 +12,7 @@ use PDOException;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Throwable;
+use TypeError;
 
 abstract class PayloadAction
 {
@@ -89,6 +90,16 @@ abstract class PayloadAction
     {
         $statusCode = $e->getCode() > 0 ? $e->getCode() : 500;
         $data = ['status' => 'error', 'message' => $e->getMessage(), 'meta' => []];
+
+        if ($e instanceof TypeError) {
+            $statusCode = 400;
+            $message = explode("$", $e->getMessage());
+            $data = [
+                'status' => 'error',
+                'message' => $message[1],
+                'meta' => ['error_info' => $e->errorInfo]
+            ];
+        }
 
         if ($e instanceof PDOException) {
             $data = [

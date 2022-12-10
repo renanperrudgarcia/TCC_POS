@@ -4,6 +4,7 @@ namespace App\Login\Adapters\Repositories;
 
 use App\Login\Domain\ValueObjects\User;
 use App\Login\UseCases\Contracts\UserApiRepositoryInterface;
+use App\Login\UseCases\User\CreateUserInputBoundary;
 use App\Shared\Adapters\Contracts\QueryBuilder\InsertStatement;
 use App\Shared\Adapters\Contracts\QueryBuilder\SelectStatement;
 use App\Shared\Domain\Entity\Usuario;
@@ -43,12 +44,13 @@ final class UserApiRepository implements UserApiRepositoryInterface
         }
     }
 
-    public function insertUserApi(User $user, string $password): void
+    public function insertUserApi(CreateUserInputBoundary $input): void
     {
         $values = [
-            'nome' =>  $user->getName(),
-            'usuario' => $user->getUser(),
-            'senha' => $password,
+            'nome' =>  $input->getName(),
+            'usuario' => $input->getUser(),
+            'senha' => $input->getPassword(),
+            'tipo_usuario' => $input->getTypeUser(),
             'created_at' => (new DateTimeImmutable())->format('Y-m-d H:i:s')
         ];
 

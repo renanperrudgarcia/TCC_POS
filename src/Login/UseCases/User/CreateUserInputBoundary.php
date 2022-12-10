@@ -4,40 +4,53 @@ declare(strict_types=1);
 
 namespace App\Login\UseCases\User;
 
-use App\Login\Domain\ValueObjects\Password;
 use App\Login\Domain\ValueObjects\User;
 use Exception;
 
 final class CreateUserInputBoundary
 {
-    private User $user;
-    private Password $password;
+    private string $name;
+    private string $user;
+    private string $password;
+    private int $type_user;
 
-    public function __construct(string $name, string $user, string $password)
+    public function __construct(string $name, string $user, string $password, int $type_user)
     {
         try {
-            $this->user = new User($name, $user);
-            $this->password = new Password($password);
+            $this->name = $name;
+            $this->user = $user;
+            $this->password = $password;
+            $this->type_user = $type_user;
         } catch (Exception $exception) {
             throw $exception;
         }
     }
 
-    public function getUser(): User
+    private function getCryptPassword(): string
+    {
+        $options = ["cost" => 10];
+        $cryptPassword = password_hash($this->password, PASSWORD_BCRYPT, $options);
+
+        return $cryptPassword;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getUser(): string
     {
         return $this->user;
     }
 
-    public function getPassword(): Password
+    public function getPassword(): string
     {
-        return $this->password;
+        return $this->getCryptPassword();
     }
 
-    public function getCryptPassword(): string
+    public function getTypeUser(): int
     {
-        $options = ["cost" => 10];
-        $cryptPassword = password_hash($this->password->getPassword(), PASSWORD_BCRYPT, $options);
-
-        return $cryptPassword;
+        return $this->type_user;
     }
 }

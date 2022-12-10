@@ -18,7 +18,8 @@ use App\Shared\Infra\GuzzleHttpClient;
 use App\Shared\Infra\RespectValidation;
 use App\Login\Adapters\Repositories\UserApiRepository;
 use App\Login\UseCases\Contracts\UserApiRepositoryInterface;
-
+use App\Reports\Adapters\Repositories\ReportUserApiRepository;
+use App\Reports\UseCases\Contracts\ReportUserRepositoryInterface;
 
 $injections = [
     // Adapters
@@ -33,5 +34,6 @@ $injections = [
 
     //Login
     UserApiRepositoryInterface::class => DI\autowire(UserApiRepository::class),
+    ReportUserRepositoryInterface::class => DI\autowire(ReportUserApiRepository::class),
 
 ];

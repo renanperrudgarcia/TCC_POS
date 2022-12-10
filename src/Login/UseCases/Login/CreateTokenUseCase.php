@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Login\UseCases\Login;
 
-use App\Login\Domain\Login;
+use App\Shared\Domain\Entity\Usuario;
 use Exception;
 use Firebase\JWT\JWT;
 
 final class CreateTokenUseCase
 {
-    public function handle(array $config, Login $login): string
+    public function handle(array $config, Usuario $login): string
     {
         try {
             $expiration = time() + (24 * 60 * 60); // 24 horas
@@ -18,7 +18,7 @@ final class CreateTokenUseCase
                 "iss" => "unialfa.com.br",
                 "iat" => time(),
                 "exp" => $expiration,
-                'data' => $login
+                'data' => $login->getNome()
             ];
             $key = $config["key"];
             $algorithm = $config["algorithm"];

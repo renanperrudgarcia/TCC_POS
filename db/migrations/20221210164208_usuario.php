@@ -13,8 +13,9 @@ final class Usuario extends AbstractMigration
         $players->addColumn('nome', 'string', ['limit' => 60])
             ->addColumn('usuario', 'string', ['limit' => 14])
             ->addColumn('senha', 'string', ['limit' => 100])
+            ->addColumn('tipo_usuario', 'integer')
             ->addColumn('created_at', 'datetime', ['null' => true])
-            ->addColumn('ended_at', 'datetime', ['null' => true])
+            ->addForeignKey('tipo_usuario', 'public.tipo_usuario')
             ->create();
     }
 }

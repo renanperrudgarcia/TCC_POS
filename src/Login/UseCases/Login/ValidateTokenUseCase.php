@@ -7,6 +7,7 @@ namespace App\Login\UseCases\Login;
 use App\Shared\Domain\Constants\HttpStatusCode;
 use Psr\Container\ContainerInterface;
 use Exception;
+use Fig\Http\Message\StatusCodeInterface;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
@@ -22,13 +23,13 @@ final class ValidateTokenUseCase
     public function handle(string $token): bool
     {
         if (empty($token)) {
-            throw new Exception('Token não informado na requisição', HttpStatusCode::UNAUTHORIZED);
+            throw new Exception('Token não informado na requisição', StatusCodeInterface::STATUS_UNAUTHORIZED);
         }
 
         list($jwt) = sscanf($token, 'Bearer %s');
 
         if (!$jwt) {
-            throw new Exception('Formato do token é inválido', HttpStatusCode::UNAUTHORIZED);
+            throw new Exception('Formato do token é inválido', StatusCodeInterface::STATUS_UNAUTHORIZED);
         }
 
         return $this->validateToken($this->container->get('config')['jwt'], $jwt);
@@ -45,7 +46,7 @@ final class ValidateTokenUseCase
 
             return true;
         } catch (Exception $exception) {
-            throw new Exception('Token inválido.', HttpStatusCode::UNAUTHORIZED);
+            throw new Exception('Token inválido.', StatusCodeInterface::STATUS_UNAUTHORIZED);
         }
     }
 }

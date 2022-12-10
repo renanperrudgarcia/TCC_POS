@@ -9,6 +9,7 @@ use App\Login\UseCases\Contracts\UserApiRepositoryInterface;
 use App\Shared\Domain\Constants\HttpStatusCode;
 use App\Shared\Domain\Entity\Usuario;
 use Exception;
+use Fig\Http\Message\StatusCodeInterface;
 
 final class LoginUseCase
 {
@@ -22,18 +23,18 @@ final class LoginUseCase
     public function handle(LoginInputBoundary $input): Usuario
     {
         try {
-            $user = $input->getUser()->getUser();
+            $user = $input->getUser();
             $login = $this->userApiRepository->findUserApi($user);
-            echo '<pre>';
-            print_r($login);
-            exit;
 
+            if (!$login) {
+                throw new Exception("Não foi encontrado nenhum usuario.", StatusCodeInterface::STATUS_BAD_REQUEST);
+            }
 
-            // $verifyPassword =  password_verify($input->getPassword()->getPassword(), $login->getPassword());
+            $verifyPassword =  password_verify($input->getPassword(), $login->getSenha());
 
-            // if (!$verifyPassword) {
-            //     throw new Exception("Usuário ou Senha incorretos.", HttpStatusCode::UNAUTHORIZED);
-            // }
+            if (!$verifyPassword) {
+                throw new Exception("Usuário ou Senha incorretos.", StatusCodeInterface::STATUS_UNAUTHORIZED);
+            }
 
             return $login;
         } catch (Exception $exception) {

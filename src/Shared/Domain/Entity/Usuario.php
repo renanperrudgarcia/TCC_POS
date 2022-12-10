@@ -40,6 +40,12 @@ final class Usuario extends Entity
     protected string $senha;
 
     /**
+     * @var int
+     * @ORM\Column(name="tipo_usuario", type="integer")
+     */
+    protected int $tipo_usuario;
+
+    /**
      * Get the value of id
      */
     public function getId(): int
@@ -107,6 +113,18 @@ final class Usuario extends Entity
     public function setSenha(string $senha): self
     {
         $this->senha = $senha;
+
+        return $this;
+    }
+
+    public function getTipoUsuario(): int
+    {
+        return $this->tipo_usuario;
+    }
+
+    public function setTipoUsuario(int $tipo_usuario): self
+    {
+        $this->tipo_usuario = $tipo_usuario;
 
         return $this;
     }

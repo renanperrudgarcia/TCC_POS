@@ -14,12 +14,14 @@ class UsuarioSeeder extends AbstractSeed
                 'nome' => 'Renan',
                 'usuario' => 'renan',
                 'senha' => '123',
+                'tipo_usuario' => 1,
                 'created_at' => $now
             ],
             [
                 'nome' => 'Aline',
                 'usuario' => 'aline',
                 'senha' => '321',
+                'tipo_usuario' => 1,
                 'created_at' => $now
             ],
         ];
