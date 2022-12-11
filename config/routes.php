@@ -15,6 +15,7 @@ use App\Middleware\AuthenticationMiddleware;
 
 use App\Middleware\CorsMiddleware;
 use App\Middleware\ExceptionNotFoundMiddleware;
+use App\Middleware\SentryMiddleware;
 use App\Reports\Adapters\Http\ReportUserApiAction;
 use Slim\Interfaces\RouteCollectorProxyInterface;
 use Slim\Factory\AppFactory;
@@ -31,6 +32,7 @@ $app->add(new CorsMiddleware());
 $app->addRoutingMiddleware();
 
 
+$app->add(new SentryMiddleware());
 // Personalizando mensagens de retorno das exceptions padrões da aplicação
 $app->add(ExceptionNotFoundMiddleware::class);
 

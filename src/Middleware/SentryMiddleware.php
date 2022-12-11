@@ -11,13 +11,6 @@ use Throwable;
 
 class SentryMiddleware
 {
-    protected array $options;
-
-    public function __construct($options)
-    {
-        $this->options = $options;
-    }
-
     /**
      * Example middleware invokable class
      *
@@ -29,13 +22,8 @@ class SentryMiddleware
     public function __invoke(Request $request, RequestHandler $handler): Response
     {
         try {
-            \Sentry\init($this->options);
-
             return $handler->handle($request);
         } catch (Throwable $exception) {
-            if ($_ENV['APP_ENV'] === 'prod') {
-                \Sentry\captureException($exception);
-            }
 
             $data['error'] = [
                 'status' => $exception->getCode(),

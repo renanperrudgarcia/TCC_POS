@@ -31,7 +31,7 @@ class AuthenticationMiddleware
 
             return $handler->handle($request);
         } catch (Exception $exception) {
-            throw new Exception('aa', 200);
+            throw new Exception($exception->getMessage(), $exception->getCode());
         }
     }
 }
